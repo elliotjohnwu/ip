@@ -7,6 +7,7 @@ public class Task {
         this.isDone = false;
     }
 
+
     public void markDone() {
         isDone = true;
     }
@@ -19,7 +20,8 @@ public class Task {
         return isDone ? "X" : " ";
     }
 
-    public String toStringWithMarking() {
+    @Override
+    public String toString() {
         return "[" + getStatusIcon() + "] " + description;
     }
 }
