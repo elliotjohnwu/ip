@@ -18,5 +18,8 @@ public class Jellyfish {
 
         String farewell = "Bye bye. Dont die\n";
         System.out.println(farewell + space);
+
+        //rubbish code for branch
+        System.out.println(farewell + space);
     }
 }
