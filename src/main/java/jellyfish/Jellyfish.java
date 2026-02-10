@@ -1,4 +1,8 @@
-import java.util.Scanner;
+package jellyfish;
+
+import jellyfish.task.*;
+
+
 
 public class Jellyfish {
     public static final String space = "____________________________________________________________\n";
@@ -10,7 +14,7 @@ public class Jellyfish {
                 + "| |_| | |_| |   <  __/\n"
                 + "|____/ \\__,_|_|\\_\\___|\n";*/
         //System.out.println("Hello from\n" + logo);
-        String name = "Jellyfish\n";
+        String name = "jellyfish.Jellyfish\n";
         String greeting = "Hi, need help?\n";
         System.out.println("Hello, I'm " + name + greeting + space);
 

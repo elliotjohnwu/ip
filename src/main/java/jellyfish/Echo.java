@@ -1,3 +1,10 @@
+package jellyfish;
+
+import jellyfish.task.Deadline;
+import jellyfish.task.Event;
+import jellyfish.task.Task;
+import jellyfish.task.Todo;
+
 import java.util.Scanner;
 
 public class Echo {
@@ -24,14 +31,14 @@ public class Echo {
             if (taskCounter >=99) {
                 //isBye = true;
                 System.out.println(Jellyfish.space);
-                System.out.println("Task List Full");
+                System.out.println("jellyfish.task.Task List Full");
                 break;
             }
 
             //call list
             if (line.equalsIgnoreCase("list")) {
                 for (int i = 1; i <= taskCounter; i++ ) {
-                    System.out.println(Integer.toString(i) + "." + tasks[i-1].toString());
+                    System.out.println(i + "." + tasks[i-1].toString());
                 }
                 System.out.println("\n" + Jellyfish.space);
                 continue;
@@ -39,12 +46,17 @@ public class Echo {
 
             //marking // added ERROR CASE FOR OUT OF BOUNDS (NO INTEGER AFTER (UN)MARK) || int exceeds task array size
             if (line.toLowerCase().startsWith("mark") || line.toLowerCase().startsWith("unmark")) {
-                int markedPosition = 0;
                 String text = line.trim();
                 String[] words = text.split(" ");
 
                 try {
                     //error handling
+
+                    //invalid number of strings
+                    if (words.length != 2) {
+                        throw new JellyfishException("invalid number of words for mark");
+                    }
+
                     //has non-digit character
                     for (char digit : words[1].toCharArray()) {
                         if (!Character.isDigit(digit)) {
@@ -52,12 +64,10 @@ public class Echo {
                         }
                     }
 
-                    //invalid number of strings
-                    if (words.length != 2) {
-                        throw new JellyfishException("invalid number of words for mark");
-                    }
+
+                    int markedPosition = Integer.parseInt(words[1]) - 1;
+
                     //invalid digit
-                    markedPosition = Integer.parseInt(words[1]) - 1;
                     if (markedPosition + 1 > taskCounter||markedPosition < 0) {
                         throw new JellyfishException("invalid digit for mark");
                     }
