@@ -19,10 +19,12 @@ public class Echo {
                 break;
 
             }
+
             //full list
             if (taskCounter >=99) {
                 //isBye = true;
                 System.out.println(Jellyfish.space);
+                System.out.println("Task List Full");
                 break;
             }
 
@@ -35,53 +37,124 @@ public class Echo {
                 continue;
             }
 
-            //marking // add ERROR CASE FOR OUT OF BOUNDS (NO INTEGER AFTER (UN)MARK) || int exceeds task array size
-            if (line.contains(("mark"))) { //change to line.substring(0,5)  start with mark/unmark
+            //marking // added ERROR CASE FOR OUT OF BOUNDS (NO INTEGER AFTER (UN)MARK) || int exceeds task array size
+            if (line.toLowerCase().startsWith("mark") || line.toLowerCase().startsWith("unmark")) {
                 int markedPosition = 0;
-                String text = line.trim().toLowerCase();
-                if (text.startsWith("unmark")) {
-                    markedPosition = Integer.parseInt(line.substring(7)) - 1;
-                    tasks[markedPosition].markNotDone();
-                    System.out.println("not done :(\n" + Integer.toString(markedPosition+1) + ". "
-                            + tasks[markedPosition].toString() + "\n"  + Jellyfish.space);
+                String text = line.trim();
+                String[] words = text.split(" ");
+
+                try {
+                    //error handling
+                    //has non-digit character
+                    for (char digit : words[1].toCharArray()) {
+                        if (!Character.isDigit(digit)) {
+                            throw new JellyfishException("invalid character for mark");
+                        }
+                    }
+
+                    //invalid number of strings
+                    if (words.length != 2) {
+                        throw new JellyfishException("invalid number of words for mark");
+                    }
+                    //invalid digit
+                    markedPosition = Integer.parseInt(words[1]) - 1;
+                    if (markedPosition + 1 > taskCounter||markedPosition < 0) {
+                        throw new JellyfishException("invalid digit for mark");
+                    }
+
+                    //mark/unmark logic
+                    if (words[0].equalsIgnoreCase("unmark")) {
+                        tasks[markedPosition].markNotDone();
+                        System.out.println("not done :(\n" + (markedPosition + 1) + ". "
+                                                   + tasks[markedPosition].toString() + "\n" + Jellyfish.space);
+
+                    } else if (words[0].equalsIgnoreCase("mark")) {
+                        tasks[markedPosition].markDone();
+                        System.out.println("done :)\n" + (markedPosition + 1) + ". "
+                                                   + tasks[markedPosition].toString() + "\n" + Jellyfish.space);
+
+                    } else {
+                        throw new JellyfishException("invalid mark");
+                    }
+                    //success, no errors
                     continue;
 
-                } else if (text.startsWith("mark")) {
-                    markedPosition = Integer.parseInt(line.substring(5)) - 1;
-                    tasks[markedPosition].markDone();
-                    System.out.println("done :)\n" + Integer.toString(markedPosition+1) + ". "
-                            + tasks[markedPosition].toString() + "\n"  + Jellyfish.space);
-                    continue;
+                } catch (JellyfishException e) {
+                    System.out.println(e.getMessage());
 
-                } else {
-                    tasks[taskCounter] = new Task(line);
-                }
+                } continue;
 
             }
 
-            if (line.startsWith("todo ")) {
-                String description = line.substring(5);
-                tasks[taskCounter] = new Todo(description);
+            if (line.toLowerCase().startsWith("todo")||line.toLowerCase().startsWith("deadline")||
+                        line.toLowerCase().startsWith("event")) {
+                if (line.toLowerCase().startsWith("todo")) {
+                    try {
+                        String[] descriptions = line.split(" ", 2);
 
-            } else if (line.startsWith("deadline ")) {
-                String[] split = line.substring(9).split(" /by ", 2);
-                String description = split[0];
-                String by = split[1];
-                tasks[taskCounter] = new Deadline(description, by);
+                        if (descriptions.length < 2) {
+                            throw new JellyfishException("todo missing following word");
 
-            } else if (line.startsWith("event ")) {
-                String[] split = line.substring(6).split(" /from | /to ");
-                String description = split[0];
-                String from = split[1];
-                String to = split[2];
-                tasks[taskCounter] = new Event(description, from, to);
+                        } else {
+                            String description = descriptions[1];
+                            if (description.isBlank()) {
+                                throw new JellyfishException("todo missing following word");
+
+                            } else if (!descriptions[0].equals("todo")) {
+                                throw new JellyfishException("invalid todo spelling");
+
+                            } else {
+                                tasks[taskCounter] = new Todo(description);
+                            }
+                        }
+
+                    } catch (JellyfishException e) {
+                        System.out.println(e.getMessage());
+                        continue;
+                    }
+
+                } else if (line.toLowerCase().startsWith("deadline")) {
+                    try {
+                        String text = line.substring(8).trim();
+
+                        if (text.isEmpty()) {
+                            throw new IndexOutOfBoundsException();
+                        }
+                        String[] split = line.substring(9).split(" /by ", 2);
+                        String description = split[0];
+                        String by = split[1];
+                        tasks[taskCounter] = new Deadline(description, by);
+
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Invalid deadline format. Use: deadline <description> /by <time>");
+                        continue;
+                    }
+
+                } else if (line.toLowerCase().startsWith("event")) {
+                    try {
+                        String text = line.substring(5).trim();
+
+                        if (text.isEmpty()) {
+                            throw new IndexOutOfBoundsException();
+                        }
+                        String[] split = line.substring(6).split(" /from | /to ");
+                        String description = split[0];
+                        String from = split[1];
+                        String to = split[2];
+                        tasks[taskCounter] = new Event(description, from, to);
+
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Invalid event format. Use: event <description> /from <start> /to <end>");
+                        continue;
+                    }
+                }
+                System.out.println("added: " + tasks[taskCounter].toString() + "\n" + Jellyfish.space);
+                taskCounter++;
 
             } else {
-                tasks[taskCounter] = new Task(line);
-            }
+                System.out.println("Invalid command, please try bye, list, (un)mark, todo, event, deadline");
 
-            System.out.println("added: " + tasks[taskCounter].toString() + "\n" + Jellyfish.space);
-            taskCounter++;
+            }
         }
     }
 }

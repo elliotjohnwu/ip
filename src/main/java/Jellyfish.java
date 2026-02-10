@@ -16,9 +16,7 @@ public class Jellyfish {
 
         Echo.startEcho();
 
-        String farewell = "Byebye. Dont die\n";
+        String farewell = "Bye bye. Dont die\n";
         System.out.println(farewell + space);
-
-
     }
 }
