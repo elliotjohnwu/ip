@@ -16,7 +16,14 @@ public class Echo {
 
         boolean isBye = false;
         ArrayList<Task> tasks = new ArrayList<>();
-        
+		int taskCounter = 0;
+		try {
+			taskCounter = Storage.load(tasks);
+			
+		} catch (JellyfishException e) {
+			System.out.println(e.getMessage());
+			
+		}
 
         while (!isBye) {
             line = in.nextLine();
@@ -124,11 +131,13 @@ public class Echo {
                     //mark/unmark logic
                     if (words[0].equalsIgnoreCase("unmark")) {
                         tasks.get(markedPosition).markNotDone();
+                        Storage.save(tasks, taskCounter);
                         System.out.println("not done :(\n" + (markedPosition + 1) + ". "
                                 + tasks.get(markedPosition).toString() + "\n" + Jellyfish.space);
 
                     } else if (words[0].equalsIgnoreCase("mark")) {
                         tasks.get(markedPosition).markDone();
+                        Storage.save(tasks, taskCounter);
                         System.out.println("done :)\n" + (markedPosition + 1) + ". "
                                 + tasks.get(markedPosition).toString() + "\n" + Jellyfish.space);
 
@@ -209,7 +218,14 @@ public class Echo {
                     }
                 }
                 System.out.println("added: " + tasks.get(tasks.size() - 1).toString() + "\n" + Jellyfish.space);
-
+                taskCounter++;
+                try {
+                    Storage.save(tasks, taskCounter);
+                } catch (JellyfishException e) {
+                    System.out.println(e.getMessage());
+                }
+                
+                
             } else {
                 System.out.println("Invalid command, please try bye, list, (un)mark, todo, event, deadline");
 
