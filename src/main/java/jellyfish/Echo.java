@@ -77,7 +77,8 @@ public class Echo {
                         System.out.println("deleted " + (markedPosition + 1) + ". "
                                 + tasks.get(markedPosition).toString() + "\n" + Jellyfish.space);
                         tasks.remove(markedPosition);
-
+                        Storage.save(tasks);
+                        
                     } else {
                         throw new JellyfishException("invalid delete");
                     }
@@ -175,12 +176,14 @@ public class Echo {
 
                 } else if (line.toLowerCase().startsWith("deadline")) {
                     try {
-                        String text = line.substring(8).trim();
+                        //String text = line.substring(8).trim();
+                        String[] text = line.split(" ", 2);
 
-                        if (text.isEmpty()) {
+                        if (text[1].isEmpty() || !text[0].equalsIgnoreCase("deadline")) {
                             throw new IndexOutOfBoundsException();
                         }
-                        String[] split = line.substring(9).split(" /by ", 2);
+                        //String[] split = line.substring(9).split(" /by ", 2);
+                        String[] split = text[1].split(" /by ", 2);
                         String description = split[0];
                         String by = split[1];
                         tasks.add(new Deadline(description, by));
@@ -192,12 +195,14 @@ public class Echo {
 
                 } else if (line.toLowerCase().startsWith("event")) {
                     try {
-                        String text = line.substring(5).trim();
+                        //String text = line.substring(5).trim();
+                        String[] text = line.split(" ", 2);
 
-                        if (text.isEmpty()) {
+                        if (text[1].isEmpty() || !text[0].equalsIgnoreCase("event")) {
                             throw new IndexOutOfBoundsException();
                         }
-                        String[] split = line.substring(6).split(" /from | /to ");
+                        //String[] split = line.substring(6).split(" /from | /to ");
+                        String[] split = text[1].split(" /from | /to ");
                         String description = split[0];
                         String from = split[1];
                         String to = split[2];
