@@ -5,6 +5,7 @@ import jellyfish.task.Event;
 import jellyfish.task.Task;
 import jellyfish.task.Todo;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Echo {
@@ -16,8 +17,15 @@ public class Echo {
         //boolean isBye = false;
         Task[] tasks = new Task[100];
         int taskCounter = 0;
-
-        while (true) {
+        try {
+            taskCounter = Storage.load(tasks);
+            
+        } catch (JellyfishException e) {
+            System.out.println(e.getMessage());
+            
+        }
+		
+		while (true) {
             line = in.nextLine();
             //end echo
             if (line.equalsIgnoreCase("bye")) {
@@ -75,11 +83,13 @@ public class Echo {
                     //mark/unmark logic
                     if (words[0].equalsIgnoreCase("unmark")) {
                         tasks[markedPosition].markNotDone();
+                        Storage.save(tasks, taskCounter);
                         System.out.println("not done :(\n" + (markedPosition + 1) + ". "
                                                    + tasks[markedPosition].toString() + "\n" + Jellyfish.space);
 
                     } else if (words[0].equalsIgnoreCase("mark")) {
                         tasks[markedPosition].markDone();
+                        Storage.save(tasks, taskCounter);
                         System.out.println("done :)\n" + (markedPosition + 1) + ". "
                                                    + tasks[markedPosition].toString() + "\n" + Jellyfish.space);
 
@@ -160,7 +170,13 @@ public class Echo {
                 }
                 System.out.println("added: " + tasks[taskCounter].toString() + "\n" + Jellyfish.space);
                 taskCounter++;
-
+                try {
+                    Storage.save(tasks, taskCounter);
+                } catch (JellyfishException e) {
+                    System.out.println(e.getMessage());
+                }
+                
+                
             } else {
                 System.out.println("Invalid command, please try bye, list, (un)mark, todo, event, deadline");
 
