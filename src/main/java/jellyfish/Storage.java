@@ -8,11 +8,12 @@ import jellyfish.task.Todo;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
 	
-	public static void save(Task[] tasks, int taskCounter) throws JellyfishException {
+	public static void save(ArrayList<Task> tasks) throws JellyfishException {
 		try {
 			File file = new File("./data/jellyfish.txt");
 			File parentDir = file.getParentFile();
@@ -20,8 +21,8 @@ public class Storage {
 				throw new JellyfishException("Could not create data directory.");
 			}
 			FileWriter fw = new FileWriter(file);
-			for (int i = 0; i < taskCounter; i++) {
-				fw.write(tasks[i].toSaveFormat() + System.lineSeparator());
+			for (Task t : tasks) {
+				fw.write(t.toSaveFormat() + System.lineSeparator());
 			}
 			fw.close();
 		} catch (IOException e) {
@@ -29,11 +30,10 @@ public class Storage {
 		}
 	}
 	
-	public static int load(Task[] tasks) throws JellyfishException {
-		int taskCounter = 0;
+	public static void load(ArrayList<Task> tasks) throws JellyfishException {
 		File file = new File("./data/jellyfish.txt");
 		if (!file.exists()) {
-			return 0;
+			return;
 		}
 		try {
 			Scanner s = new Scanner(file);
@@ -42,19 +42,21 @@ public class Storage {
 				String[] parts = line.split(" \\| ");
 				String type = parts[0].trim();
 				boolean done = parts[1].trim().equals("1");
+				Task t = null;
 				if (type.equals("T")) {
-					tasks[taskCounter] = new Todo(parts[2].trim());
+					t = new Todo(parts[2].trim());
 				} else if (type.equals("D")) {
-					tasks[taskCounter] = new Deadline(parts[2].trim(), parts[3].trim());
+					t = new Deadline(parts[2].trim(), parts[3].trim());
 				} else if (type.equals("E")) {
-					tasks[taskCounter] = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
+					t = new Event(parts[2].trim(), parts[3].trim(), parts[4].trim());
 				}
-				if (done) tasks[taskCounter].markDone();
-				taskCounter++;
+				if (t != null) {
+					if (done) t.markDone();
+					tasks.add(t);
+				}
 			}
 		} catch (IOException e) {
 			throw new JellyfishException("Could not load tasks from file: " + e.getMessage());
 		}
-		return taskCounter;
 	}
 }

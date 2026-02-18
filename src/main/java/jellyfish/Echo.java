@@ -16,9 +16,8 @@ public class Echo {
 
         boolean isBye = false;
         ArrayList<Task> tasks = new ArrayList<>();
-		int taskCounter = 0;
 		try {
-			taskCounter = Storage.load(tasks);
+            Storage.load(tasks);
 			
 		} catch (JellyfishException e) {
 			System.out.println(e.getMessage());
@@ -34,15 +33,7 @@ public class Echo {
                 continue;
 
             }
-/*
-            //full list
-            if (taskCounter >=99) {
-                //isBye = true;
-                System.out.println(Jellyfish.space);
-                System.out.println("jellyfish.task.Task List Full");
-                break;
-            }
-*/
+
             //call list
             if (line.equalsIgnoreCase("list")) {
                 if (tasks.isEmpty()) {
@@ -131,13 +122,13 @@ public class Echo {
                     //mark/unmark logic
                     if (words[0].equalsIgnoreCase("unmark")) {
                         tasks.get(markedPosition).markNotDone();
-                        Storage.save(tasks, taskCounter);
+                        Storage.save(tasks);
                         System.out.println("not done :(\n" + (markedPosition + 1) + ". "
                                 + tasks.get(markedPosition).toString() + "\n" + Jellyfish.space);
 
                     } else if (words[0].equalsIgnoreCase("mark")) {
                         tasks.get(markedPosition).markDone();
-                        Storage.save(tasks, taskCounter);
+                        Storage.save(tasks);
                         System.out.println("done :)\n" + (markedPosition + 1) + ". "
                                 + tasks.get(markedPosition).toString() + "\n" + Jellyfish.space);
 
@@ -218,16 +209,15 @@ public class Echo {
                     }
                 }
                 System.out.println("added: " + tasks.get(tasks.size() - 1).toString() + "\n" + Jellyfish.space);
-                taskCounter++;
                 try {
-                    Storage.save(tasks, taskCounter);
+                    Storage.save(tasks);
                 } catch (JellyfishException e) {
                     System.out.println(e.getMessage());
                 }
                 
                 
             } else {
-                System.out.println("Invalid command, please try bye, list, (un)mark, todo, event, deadline");
+                System.out.println("Invalid command, please try bye, list, (un)mark, todo, event, deadline, delete");
 
             }
         }
