@@ -1,0 +1,5 @@
+T | 0 | beep bop
+T | 0 | woof
+T | 0 | bark
+D | 0 | hehehark | jikan
+D | 0 | hehark hoo haaaa | meme

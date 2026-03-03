@@ -9,8 +9,8 @@ public class Ui {
 	private static final Scanner in = new Scanner(System.in);
 	
 	public static void showWelcome() {
-		String name = "jellyfish.Jellyfish\n";
-		String greeting = "Hi, need help?\n";
+		String name = "Jellyfish, ";
+		String greeting = "at your service.\n";
 		System.out.println("Hello, I'm " + name + greeting + Jellyfish.space);
 	}
 	
@@ -58,5 +58,17 @@ public class Ui {
 			System.out.println(i + "." + tasks.get(i - 1).toString());
 		}
 		System.out.println("\n" + Jellyfish.space);
+	}
+	
+	public static void showFindResults(ArrayList<Task> results) {
+		if (results.isEmpty()) {
+			System.out.println("No matching tasks found.\n" + Jellyfish.space);
+			return;
+		}
+		System.out.println("Here are the matching tasks in your list:");
+		for (int i = 1; i <= results.size(); i++) {
+			System.out.println(" " + i + "." + results.get(i - 1).toString());
+		}
+		System.out.println(Jellyfish.space);
 	}
 }

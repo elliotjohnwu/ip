@@ -1,5 +1,4 @@
-Hello, I'm jellyfish.Jellyfish
-Hi, need help?
+Hello, I'm Jellyfish, at your service.
 ____________________________________________________________
 
 Invalid command, please try bye, list, (un)mark, todo, event, deadline, delete
