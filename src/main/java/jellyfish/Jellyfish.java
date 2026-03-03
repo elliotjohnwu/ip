@@ -1,26 +1,35 @@
 package jellyfish;
 
-import jellyfish.task.*;
-
-
+import java.util.ArrayList;
 
 public class Jellyfish {
+    
     public static final String space = "____________________________________________________________\n";
-
+    
     public static void main(String[] args) {
-        /*String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";*/
-        //System.out.println("Hello from\n" + logo);
-        String name = "jellyfish.Jellyfish\n";
-        String greeting = "Hi, need help?\n";
-        System.out.println("Hello, I'm " + name + greeting + space);
-
-        Echo.startEcho();
-
-        String farewell = "Bye bye. Dont die\n";
-        System.out.println(farewell + space);
+        Ui.showWelcome();
+        
+        TaskList tasks;
+        ArrayList<jellyfish.task.Task> loadedTasks = new ArrayList<>();
+        try {
+            Storage.load(loadedTasks);
+            tasks = new TaskList(loadedTasks);
+        } catch (JellyfishException e) {
+            Ui.showLoadingError();
+            tasks = new TaskList();
+        }
+        
+        boolean isBye = false;
+        while (!isBye) {
+            String line = Ui.readCommand();
+            if (line.equalsIgnoreCase("bye")) {
+                isBye = true;
+                Ui.showLine();
+            } else {
+                Parser.parse(line, tasks);
+            }
+        }
+        
+        Ui.showFarewell();
     }
 }
