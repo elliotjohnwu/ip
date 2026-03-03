@@ -32,5 +32,6 @@ public class Jellyfish {
         
         Ui.showFarewell();
     }
+    //dummy code for Level 9 branch cause I forgot sorry
 
 }
