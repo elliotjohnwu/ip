@@ -1,2 +1,11 @@
-D | 1 | homework math | 2020-04-06
-D | 0 | homework science | 2026-03-06
+D | 1 | homework science | 2026-03-06
+D | 1 | hoo ha | 2019-06-06
+D | 0 | hee | 2018/31/31
+D | 0 | hee | 2018/12/99
+D | 0 | hee | 2018/12/20
+D | 0 | hee | 2018-12-20
+D | 0 | hee | 2018-12-99
+E | 0 | bingo | 2018-01-01 | 2018 jun 6
+E | 0 | bingo | 2018-01-01 | 2018-1-1
+E | 0 | bingo | 2018-01-01 | 2018-01-01
+T | 0 | bonk
