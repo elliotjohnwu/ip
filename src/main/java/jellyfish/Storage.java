@@ -11,8 +11,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Handles loading and saving tasks to a local file.
+ * Tasks are stored in a pipe-delimited text format at ./data/jellyfish.txt.
+ */
 public class Storage {
 	
+	/**
+	 * Saves all tasks to the data file, overwriting any existing content.
+	 *
+	 * @param tasks The list of tasks to save.
+	 * @throws JellyfishException If the directory cannot be created or the file cannot be written.
+	 */
 	public static void save(ArrayList<Task> tasks) throws JellyfishException {
 		try {
 			File file = new File("./data/jellyfish.txt");
@@ -30,6 +40,13 @@ public class Storage {
 		}
 	}
 	
+	/**
+	 * Loads tasks from the data file into the given list.
+	 * If the file does not exist, no tasks are loaded and no error is thrown.
+	 *
+	 * @param tasks The list to populate with loaded tasks.
+	 * @throws JellyfishException If the file cannot be read.
+	 */
 	public static void load(ArrayList<Task> tasks) throws JellyfishException {
 		File file = new File("./data/jellyfish.txt");
 		if (!file.exists()) {
