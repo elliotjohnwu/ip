@@ -145,45 +145,42 @@ public class Parser {
 				String[] descriptions = line.split(" ", 2);
 				if (descriptions.length < 2 || descriptions[1].isBlank()) {
 					throw new JellyfishException("todo missing following word");
-					
 				} else if (!descriptions[0].equals("todo")) {
 					throw new JellyfishException("invalid todo spelling");
-					
 				}
 				newTask = new Todo(descriptions[1]);
 				
-			} else if (line.toLowerCase().startsWith("deadline")) {
+			}
+			if (line.toLowerCase().startsWith("deadline")) {
 				String[] text = line.split(" ", 2);
 				if (text.length < 2 || text[1].isEmpty() || !text[0].equalsIgnoreCase("deadline")) {
-					throw new JellyfishException("Invalid deadline format. Use: " +
-							"deadline <description> /by <time>");
-					
+					throw new JellyfishException("Invalid deadline format. Use: "
+							+ "deadline <description> /by <time>");
 				}
 				String[] split = text[1].split(" /by ", 2);
 				if (split.length < 2) {
-					throw new JellyfishException("Invalid deadline format. " +
-							"Use: deadline <description> /by <time>");
-					
+					throw new JellyfishException("Invalid deadline format. "
+							+ "Use: deadline <description> /by <time>");
 				}
 				newTask = new Deadline(split[0], split[1]);
 				
-			} else if (line.toLowerCase().startsWith("event")) {
+			}
+			if (line.toLowerCase().startsWith("event")) {
 				String[] text = line.split(" ", 2);
 				if (text.length < 2 || text[1].isEmpty() || !text[0].equalsIgnoreCase("event")) {
-					throw new JellyfishException("Invalid event format. " +
-							"Use: event <description> /from <start> /to <end>");
+					throw new JellyfishException("Invalid event format. "
+							+ "Use: event <description> /from <start> /to <end>");
 				}
 				String[] split = text[1].split(" /from | /to ");
 				if (split.length < 3) {
-					throw new JellyfishException("Invalid event format. " +
-							"Use: event <description> /from <start> /to <end>");
+					throw new JellyfishException("Invalid event format. "
+							+ "Use: event <description> /from <start> /to <end>");
 				}
 				newTask = new Event(split[0], split[1], split[2]);
 			}
 		} catch (JellyfishException e) {
 			Ui.showError(e.getMessage());
 			return;
-			
 		}
 		
 		if (newTask != null) {
