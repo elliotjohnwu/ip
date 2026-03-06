@@ -2,10 +2,21 @@ package jellyfish;
 
 import java.util.ArrayList;
 
+/**
+ * Entry point of the Jellyfish chatbot application.
+ * Initializes all components and runs the main command loop.
+ */
 public class Jellyfish {
     
+    /** Divider line used throughout the UI. */
     public static final String space = "____________________________________________________________\n";
     
+    /**
+     * Starts the Jellyfish application.
+     * Loads saved tasks, then repeatedly reads and processes user commands until bye is entered.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         Ui.showWelcome();
         
@@ -32,6 +43,4 @@ public class Jellyfish {
         
         Ui.showFarewell();
     }
-    //dummy code for Level 9 branch cause I forgot sorry
-
 }
