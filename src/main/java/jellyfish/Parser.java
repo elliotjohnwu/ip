@@ -96,16 +96,17 @@ public class Parser {
 				tasks.unmarkTask(index);
 				Storage.save(tasks.getTasks());
 				Ui.showTaskUnmarked(index + 1, tasks.getTask(index));
+				return;
 				
-			} else if (words[0].equalsIgnoreCase("mark")) {
+			}
+			if (words[0].equalsIgnoreCase("mark")) {
 				tasks.markTask(index);
 				Storage.save(tasks.getTasks());
 				Ui.showTaskMarked(index + 1, tasks.getTask(index));
-				
-			} else {
-				throw new JellyfishException("invalid mark");
+				return;
 				
 			}
+			throw new JellyfishException("invalid mark");
 		} catch (JellyfishException e) {
 			Ui.showError(e.getMessage());
 			
